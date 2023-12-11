@@ -24,6 +24,7 @@ export class ClientsController {
   async readClients() {
     return this.clientsService.readClients();
   }
+
   @UseGuards(AuthGuard)
   @Get(':id')
   async readOneClient(@Param('id', ParseIntPipe) id: number) {
@@ -36,6 +37,7 @@ export class ClientsController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id')
   async updateClient(
     @Param('id', ParseIntPipe) id: number,
@@ -49,6 +51,7 @@ export class ClientsController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteClient(@Param('id', ParseIntPipe) id: number) {
     const response = await this.clientsService.deleteClient(id);

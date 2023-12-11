@@ -9,12 +9,13 @@ import {
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDTO } from './dto/signup.dto';
 import { SignInDTO } from './dto/signin.dto';
-import { Prisma } from '@prisma/client';
 import { changePasswordDTO } from './dto/changePass.dto';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -40,11 +41,13 @@ export class AuthController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async findUsers() {
     return await this.authService.findUsers();
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id')
   async changePassword(
     @Param('id', ParseIntPipe) id: number,
