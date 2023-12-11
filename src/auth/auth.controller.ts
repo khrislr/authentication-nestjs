@@ -14,6 +14,7 @@ import { AuthService } from './auth.service';
 import { SignUpDTO } from './dto/signup.dto';
 import { SignInDTO } from './dto/signin.dto';
 import { Prisma } from '@prisma/client';
+import { changePasswordDTO } from './dto/changePass.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -47,7 +48,7 @@ export class AuthController {
   @Put(':id')
   async changePassword(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: Prisma.UserUpdateInput,
+    @Body() body: changePasswordDTO,
   ) {
     const response = await this.authService.changePassword(id, body);
 

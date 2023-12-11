@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
 import { SignUpDTO } from './dto/signup.dto';
-import { Prisma, User } from '@prisma/client';
 import * as bycrypt from 'bcrypt';
 import { SignInDTO } from './dto/signin.dto';
+import { changePasswordDTO } from './dto/changePass.dto';
 
 @Injectable()
 export class AuthService {
@@ -73,10 +73,14 @@ export class AuthService {
     }
   }
 
-  async changePassword(id: number, data: Prisma.UserUpdateInput) {
+  async changePassword(id: number, data: changePasswordDTO) {
+    const saltRound = 10;
+    const encryptedPassword = await bycrypt.hash(data.password, saltRound)
     const response = await this.prismaClient.user.update({
       where: { id },
-      data,
+      data:{
+        password: encryptedPassword
+      },
     });
 
     if (response) {

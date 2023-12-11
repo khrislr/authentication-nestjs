@@ -8,19 +8,23 @@ import {
   Param,
   ParseIntPipe,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { Prisma } from '@prisma/client';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   async readClients() {
     return this.clientsService.readClients();
   }
-
+  @UseGuards(AuthGuard)
   @Get(':id')
   async readOneClient(@Param('id', ParseIntPipe) id: number) {
     const response = await this.clientsService.readOneCLient(id);
